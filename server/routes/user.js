@@ -3,7 +3,7 @@ const router=express.Router()
 const userController=require("../Controllers/UserController")
 
 router.get("/",userController.getAllUsers)
-router.get("/:username",userController.getUserByUserName)
+router.get("/:username",userController.getUserByID)
 router.post("/",userController.createUser)
 router.put("/",userController.apdateUser)
 router.delete("/",userController.deleteUser)
