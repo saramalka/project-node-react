@@ -3,7 +3,7 @@ const router=express.Router()
 const photoController=require("../Controllers/PhotoController")
 
 router.get("/",photoController.getAllPhotos)
-router.get("/:title",photoController.getPhotoByTitle)
+router.get("/:id",photoController.getPhotoById)
 router.post("/",photoController.createPhoto)
 router.put("/",photoController.apdatePhoto)
 router.delete("/",photoController.deletePhoto)

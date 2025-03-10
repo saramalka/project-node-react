@@ -26,25 +26,26 @@ const getAllPhotos= async (req, res) => {
 }
 
 const apdatePhoto=async(req,res)=>{
-    const{title,imgURL}=req.body
-    if(!title||!imgURL)
+    const{title,imgURL,_id}=req.body
+    if(!title||!imgURL,_id)
         res.status(400).json('title,imgURL are required fields')
     
-    const photo=Photo.find(title).lean()
+    const photo=Photo.findById(_id).exec()
     if(!photo)
         res.status(400).json('photo is not exist')
 
     photo.title=title
     photo.imgURL=imgURL
+    photo._id=_id
 
-    const apdatePhoto= await Photo.save()
+    const apdatePhoto= await photo.save()
     res.json(`${apdatePhoto} updated`)
 }
 
 const deletePhoto = async (req, res) => {
-    const { title } = req.body
+    const { id } = req.body
     
-    const photo = await Photo.find(title).exec()
+    const photo = await Photo.findById(id).exec()
     if (!photo) {
     return res.status(400).json({ message: 'Photo not found' })
     }
@@ -52,10 +53,10 @@ const deletePhoto = async (req, res) => {
     const reply=`Photo '${result.title}' deleted`
     res.json(reply)
 }
-const getPhotoByTitle = async (req, res) => {
-    const {title} = req.params
+const getPhotoById = async (req, res) => {
+    const {id} = req.params
         
-    const photo = await Photo.find(title).lean()
+    const photo = await Photo.findById(id).lean()
        
      if (!photo) {
        
@@ -63,4 +64,4 @@ const getPhotoByTitle = async (req, res) => {
         }
     res.json(photo)
 }
-module.exports={createPhoto,getAllPhotos,apdatePhoto,deletePhoto,getPhotoByTitle}
+module.exports={createPhoto,getAllPhotos,apdatePhoto,deletePhoto,getPhotoById}

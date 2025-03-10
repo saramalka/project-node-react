@@ -3,7 +3,7 @@ const router=express.Router()
 const taskController=require("../Controllers/TaskController")
 
 router.get("/",taskController.getAllTasks)
-router.get("/:title",taskController.getTaskByTitle)
+router.get("/:title",taskController.getTaskById)
 router.post("/",taskController.createTask)
 router.put("/",taskController.apdateTask)
 router.put("/:id",taskController.updateTaskComplete)

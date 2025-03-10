@@ -26,25 +26,26 @@ const getAllPosts= async (req, res) => {
 }
 
 const apdatePost=async(req,res)=>{
-    const{title,body}=req.body
-    if(!title||!body)
+    const{title,body,_id}=req.body
+    if(!title||!body,_id)
         res.status(400).json('title,body are required fields')
     
-    const post=Post.find(title).lean()
+    const post=Post.findById(id).lean()
     if(!post)
         res.status(400).json('post is not exist')
 
     post.title=title
     post.body=body
+    post._id=_id
 
-    const apdatePost= await Post.save()
+    const apdatePost= await post.save()
     res.json(`${apdatePost} updated`)
 }
 
 const deletePost = async (req, res) => {
-    const { title } = req.body
+    const { id } = req.body
     
-    const post = await Post.find(title).exec()
+    const post = await Post.findById(id).exec()
     if (!post) {
     return res.status(400).json({ message: 'Post not found' })
     }
@@ -53,14 +54,14 @@ const deletePost = async (req, res) => {
     res.json(reply)
     }
 
-const getPostByTitle = async (req, res) => {
-        const {title} = req.params
+const getPostById = async (req, res) => {
+        const {id} = req.params
         
-        const post = await Post.find(title).lean()
+        const post = await Post.findById(id).exec()
        
         if (!post) {
         return res.status(400).json({ message: 'No post found' })
         }
         res.json(post)
         }
-module.exports={createPost,getAllPosts,apdatePost,deletePost,getPostByTitle}
+module.exports={createPost,getAllPosts,apdatePost,deletePost,getPostById}

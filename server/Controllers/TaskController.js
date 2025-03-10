@@ -26,26 +26,27 @@ const getAllTasks= async (req, res) => {
 }
 
 const apdateTask=async(req,res)=>{
-    const{title,tags,complete}=req.body
-    if(!title)
+    const{title,tags,complete,_id}=req.body
+    if(!title||!_id)
         res.status(400).json('title is required field')
     
-    const task=Task.find(title).lean()
+    const task=Task.findById(_id).exec()
     if(!task)
         res.status(400).json('task is not exist')
 
     task.title=title
     task.tags=tags
     task.complete=complete
+    task._id=_id
 
-    const apdateTask= await Task.save()
+    const apdateTask= await task.save()
     res.json(`${apdateTask} updated`)
 }
 
 const deleteTask = async (req, res) => {
-    const { title } = req.body
+    const { _id } = req.body
     
-    const task = await Task.find(title).exec()
+    const task = await Task.findById(_id).exec()
     if (!task) {
     return res.status(400).json({ message: 'Task not found' })
     }
@@ -54,10 +55,10 @@ const deleteTask = async (req, res) => {
     res.json(reply)
     }
 
-const getTaskByTitle = async (req, res) => {
-        const {title} = req.params
+const getTaskById = async (req, res) => {
+        const {id} = req.params
         
-        const task = await Task.find(title).lean()
+        const task = await Task.findById(id).lean()
        
         if (!task) {
         return res.status(400).json({ message: 'No Task found' })
@@ -65,15 +66,15 @@ const getTaskByTitle = async (req, res) => {
         res.json(task)
         }
 
-        const updateTaskComplete = async (req, res) => {
-            const { id } = req.params
+const updateTaskComplete = async (req, res) => {
+        const { id } = req.params
             
-            const task = await Task.findById(id).exec()
+         const task = await Task.findById(id).exec()
             if (!task) {
-            return res.status(400).json({ message: 'Task not found' })
+              return res.status(400).json({ message: 'Task not found' })
             }
-            task.complete = !task.complete
-            const updatedTask = await task.save()
-            res.json(`'${updatedTask.title}' updated`)
-            }      
-module.exports={createTask,getAllTasks,apdateTask,deleteTask,getTaskByTitle,updateTaskComplete}
+        task.complete = !task.complete
+        const updatedTask = await task.save()
+        res.json(`'${updatedTask.title}' updated`)
+    }      
+module.exports={createTask,getAllTasks,apdateTask,deleteTask,getTaskById,updateTaskComplete}
