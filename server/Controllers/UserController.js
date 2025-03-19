@@ -29,7 +29,7 @@ const apdateUser=async(req,res)=>{
     const{name,username,email,address,phone,_id}=req.body
     debugger
     if(!name||!username||!_id)
-        res.status(400).json('name and username are required fields')
+        res.status(400).json('name, id and username are required fields')
     
     const user= await User.findById(_id).exec()
     if(!user)
