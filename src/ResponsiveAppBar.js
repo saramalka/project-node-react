@@ -55,7 +55,7 @@ function ResponsiveAppBar() {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              onClick={() => navigate(`/Tasks`)}
               color="inherit"
             >
               <MenuIcon />
@@ -77,7 +77,7 @@ function ResponsiveAppBar() {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={() => navigate(`/${page}`)}>
+                <MenuItem key={page} onClick={() => navigate(`/Posts`)}>
                  
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
@@ -89,7 +89,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => navigate(`/${page}`)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -114,7 +114,7 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => navigate(`/Users`)}>
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}
