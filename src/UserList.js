@@ -7,6 +7,7 @@ import  IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import EditUser from './EditUser';
+import AddUser from './AddUser'
 
 
 
@@ -15,6 +16,8 @@ const paginationModel = { page: 0, pageSize: 5 };
 export default function UserList() {
     const [users, setUsers] = useState([]);
     const [edit, setEdit] = useState(false);
+    const [add, setAdd] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
 useEffect(() => {
     axios.get("http://localhost:2000/api/user") 
       .then((response) => {
@@ -46,19 +49,27 @@ const handleDelete = (id) => {
       console.error("Error fetching data:", error);
     });
 }
-
-const handleEdit = (id) => {
-console.log("Editing user:", id);
-setEdit(true);   
+const handleAdd=()=>{
+  setAdd(true)
+}
+const handleEdit = (user) => {
+console.log("Editing user:", user.name);
+setEdit(true); 
+setSelectedUser(user)  
 }
 
-
+if (edit) {
+  return <EditUser user={selectedUser} setUser={setUsers} onClose={() => setEdit(false)} />;
+}
+if (add) {
+  return <AddUser  onClose={() => setAdd(false)} />;
+}
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'name', headerName: 'Name', width: 130 },
   { field: 'username', headerName: 'User name', width: 130 },
   { field: 'phone', headerName: 'Phone', width: 130 },
-  { field: 'mail', headerName: 'Email', width: 130 },
+  { field: 'mail', headerName: 'Email', width: 150 },
   { 
     field: 'Edit ', 
     headerName: '', 
@@ -66,7 +77,7 @@ const columns = [
     sortable: false,
     renderCell: (params) => (
         <Button aria-label="edit"
-        onClick={() => handleEdit(params.row.id)}>
+        onClick={() => handleEdit(params.row)}>
        ✏️
       </Button>
     )
@@ -87,6 +98,10 @@ const columns = [
 ];
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
+      <Button variant="contained" color="success"onClick={()=>handleAdd()}>
++
+
+</Button>
       <DataGrid
         rows={users}
         columns={columns}
@@ -95,7 +110,7 @@ const columns = [
         checkboxSelection
         sx={{ border: 0 }}
       />
-      <EditUser props={edit}></EditUser>
+     
     </Paper>
 
   );
