@@ -31,15 +31,17 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 export default function EditUser({ user,setUser, onClose }) {
   const [name, setName] = useState(user?.name || '');
+  const [username, setUserName] = useState(user?.username || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
   
-  const [emailError, setEmailError] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  
   const [phoneError, setPhoneError] = useState(false);
   const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
   const [nameError, setNameError] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
+  const [userNameError, setUserNameError] = useState(false);
+  const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
 
   useEffect(() => {
     setName(user?.name || '');
@@ -50,15 +52,6 @@ export default function EditUser({ user,setUser, onClose }) {
   const validateInputs = () => {
     let isValid = true;
 
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
-
     if (!phone || phone.length < 8) {
       setPhoneError(true);
       setPhoneErrorMessage('Phone must be at least 8 numbers long.');
@@ -67,7 +60,14 @@ export default function EditUser({ user,setUser, onClose }) {
       setPhoneError(false);
       setPhoneErrorMessage('');
     }
-
+    if (!username || username.length < 1) {
+      setUserNameError(true);
+      setUserNameErrorMessage('User Name is required.');
+      isValid = false;
+    } else {
+      setUserNameError(false);
+      setUserNameErrorMessage('');
+    }
     if (!name || name.length < 1) {
       setNameError(true);
       setNameErrorMessage('Name is required.');
@@ -92,7 +92,7 @@ export default function EditUser({ user,setUser, onClose }) {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      username:user.username,
+      username:formData.get('username'),
       _id:user._id
     };
     axios.put("http://localhost:2000/api/user",  updatedUser)  
@@ -129,18 +129,29 @@ export default function EditUser({ user,setUser, onClose }) {
                 helperText={nameErrorMessage}
               />
             </FormControl>
-
+            <FormControl>
+            <FormLabel htmlFor="username">User Name</FormLabel>
+              <TextField
+                name="username"
+                required
+                fullWidth
+                id="username"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+                error={userNameError}
+                helperText={userNameErrorMessage}
+              />
+              </FormControl>
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-                required
+                
                 fullWidth
                 id="email"
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
-                helperText={emailErrorMessage}
+               
               />
             </FormControl>
 

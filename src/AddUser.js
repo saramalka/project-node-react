@@ -68,7 +68,7 @@ export default function EditUser({setUser,  onClose }) {
   const [username, setUserName] = useState('');   
   const [email, setEmail] = useState('');  
   const [phone, setPhone] = useState('');  
- const [user,setUser]=useState(null)
+
 const validateInputs = () => {
     const email = document.getElementById('email');
     const phone = document.getElementById('phone');
@@ -114,8 +114,9 @@ const validateInputs = () => {
   };
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     if (nameError||userNameError || emailError || phoneError) {
-      event.preventDefault();
+      
       return;
     }
     const data = new FormData(event.currentTarget);
@@ -129,8 +130,9 @@ const validateInputs = () => {
   };
      axios.post("http://localhost:2000/api/user",  addUser) 
      .then((response) => {
-        const addedUser = response.data; 
-        setUser(prevUsers => [...prevUsers, { ...addedUser, id: addedUser._id }]);
+      const addedUser = response.data;
+      
+      handleAddUserSuccess(addedUser);
         onClose?.();
       }) 
         .catch((error) => {
@@ -140,9 +142,11 @@ const validateInputs = () => {
         console.log('Add user:', addUser);
         onClose?.(); 
   };
-
+  const handleAddUserSuccess = (newUser) => {
+    setUser(prevUsers => [...prevUsers, { id: newUser._id, ...newUser }]);
+  }
   return (
-    <AppTheme {...user}>
+    <AppTheme >
       {/* <CssBaseline enableColorScheme /> */}
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">

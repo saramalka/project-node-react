@@ -18,21 +18,22 @@ export default function UserList() {
     const [edit, setEdit] = useState(false);
     const [add, setAdd] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-useEffect(() => {
-    axios.get("http://localhost:2000/api/user") 
-      .then((response) => {
-        const usersWithId = response.data.map((user, index) => ({
-          id: user._id || index, 
-          ...user
-        }));
-        setUsers(usersWithId);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
+    useEffect(() => {
+      axios.get("http://localhost:2000/api/user")
+        .then((response) => {
+          const usersWithId = response.data.map((user) => ({
+            id: user._id,
+            ...user
+          }));
+          setUsers(usersWithId);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }, []);
+    
   useEffect(() => {
-    console.log("Updated students:", users);
+    console.log("Updated users:", users);
 }, [users]); 
 
 
@@ -104,7 +105,7 @@ Add New User
 </Button>
       <DataGrid
         rows={users}
-        getRowId={(row) => row._id} 
+        getRowId={(row) => row._id|| row.id || Math.random() }
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
