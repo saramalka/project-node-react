@@ -99,7 +99,7 @@ const columns = [
   return (
     <Paper sx={{ height: 400, width: '100%' }}>
       <Button variant="contained" color="success"onClick={()=>handleAdd()}>
-+
+Add New User
 
 </Button>
       <DataGrid

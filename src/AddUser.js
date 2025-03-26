@@ -55,7 +55,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function EditUser({  onClose }) {
+export default function EditUser({setUser,  onClose }) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [phoneError, setPhoneError] = React.useState(false);
@@ -130,7 +130,7 @@ const validateInputs = () => {
      axios.post("http://localhost:2000/api/user",  addUser) 
      .then((response) => {
         const addedUser = response.data; 
-        setUsers(prevUsers => [...prevUsers, { ...addedUser, id: addedUser._id }]);
+        setUser(prevUsers => [...prevUsers, { ...addedUser, id: addedUser._id }]);
         onClose?.();
       }) 
         .catch((error) => {
