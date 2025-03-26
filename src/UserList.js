@@ -31,9 +31,9 @@ useEffect(() => {
         console.error("Error fetching data:", error);
       });
   }, []);
-//   useEffect(() => {
-//     console.log("Updated students:", users);
-// }, [users]); 
+  useEffect(() => {
+    console.log("Updated students:", users);
+}, [users]); 
 
 
 const handleDelete = (id) => {
@@ -62,7 +62,7 @@ if (edit) {
   return <EditUser user={selectedUser} setUser={setUsers} onClose={() => setEdit(false)} />;
 }
 if (add) {
-  return <AddUser  onClose={() => setAdd(false)} />;
+  return <AddUser setUser={setUsers} onClose={() => setAdd(false)} />;
 }
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -104,6 +104,7 @@ const columns = [
 </Button>
       <DataGrid
         rows={users}
+        getRowId={(row) => row._id} 
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}

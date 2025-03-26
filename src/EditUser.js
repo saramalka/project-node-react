@@ -96,8 +96,9 @@ export default function EditUser({ user,setUser, onClose }) {
       _id:user._id
     };
     axios.put("http://localhost:2000/api/user",  updatedUser)  
-    .then((response) => {
-      
+    .then(() => {
+      setUser(prevUsers => prevUsers.map(u => u._id === user._id ? updatedUser : u));
+      onClose?.();
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
