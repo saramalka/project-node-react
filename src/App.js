@@ -1,10 +1,10 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ResponsiveAppBar from './ResponsiveAppBar'
-import UserList from './UserList';
-import PhotoGrid from './PhotoGrid';
-import PostList from './PostList';
-import TaskList from './TaskList';
+import UserList from './Components/Users/UserList'
+import PhotoGrid from './Components/Photoes/PhotoGrid';
+import PostList from './Components/Posts/PostList';
+import TaskList from './Components/Tasks/TaskList';
 
 function App() {
   return (
