@@ -8,10 +8,10 @@ const createUser=async(req,res)=>{
     const user=await User.create({name,username,email,address,phone})
 
     if (user) { 
-        return res.status(201).json({ message: 'New user created' })
+        return res.status(201).json(user)
     } 
     else {
-        return res.status(400).json({ message: 'Invalid user ' })
+        return res.status(400).json({ message: 'Invalid user' })
     }
 }
 

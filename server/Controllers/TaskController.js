@@ -2,6 +2,7 @@ const Task=require("../models/Task")
 
 const createTask=async(req,res)=>{
     const{title,tags,complete}=req.body
+    complete=complete==on?true:false
     if(!title)
         res.status(400).json('title is required field')
 
@@ -28,11 +29,11 @@ const getAllTasks= async (req, res) => {
 const apdateTask=async(req,res)=>{
     const{title,tags,complete,_id}=req.body
     if(!title||!_id)
-        res.status(400).json('title is required field')
+        return res.status(400).json({ error: "title and _id are required fields" });
     
-    const task=Task.findById(_id).exec()
+    const task=await Task.findById(_id).exec()
     if(!task)
-        res.status(400).json('task is not exist')
+       return res.status(400).json('task is not exist')
 
     task.title=title
     task.tags=tags

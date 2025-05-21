@@ -9,7 +9,7 @@ const TaskSchema=new mongoose.Schema({
 
         // },
         tags:{
-            type:Number,
+            type:String,
             min:0,
             max:5,
             
